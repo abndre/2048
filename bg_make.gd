@@ -27,25 +27,6 @@ func space_blank():
 				return true
 	return false
 
-func move_all_pieces(direction: Vector2):
-	match direction:
-		Vector2.UP:
-			pass
-		Vector2.DOWN:
-			pass
-		Vector2.RIGHT:
-			print("right")
-		Vector2.LEFT:
-			pass
-		_:
-			continue
- 
-func move_right():
-	for j in height:
-		for i in width:
-			pass
-		print(matrix[j])
-
 func grid_to_pixel(grid: Vector2):
 		return Vector2(x + grid.x*plus, y + grid.y*plus)
 
@@ -59,7 +40,7 @@ func move_piece(piece: Vector2, direction: Vector2):
 	
 	var this_piece = obj_matriz[piece.x][piece.y]
 	var value = this_piece.value
-	
+	var temp = obj_matriz[piece.x][piece.y].next_piece
 	var next_space =  piece + direction
 	
 	var next_value = obj_matriz[next_space.x][next_space.y]
@@ -77,7 +58,7 @@ func move_piece(piece: Vector2, direction: Vector2):
 					break
 				# boarda cheio e valor o mesmo
 				if obj_matriz[i][piece.y] !=null && obj_matriz[i][piece.y].value == value:
-					var temp = obj_matriz[piece.x][piece.y].next_piece
+					#var temp = obj_matriz[piece.x][piece.y].next_piece
 					remove_and_clear(piece)
 					remove_and_clear(Vector2(i, piece.y))
 					var new_piece = temp.instance()
@@ -97,7 +78,7 @@ func move_piece(piece: Vector2, direction: Vector2):
 					break
 				# boarda cheio e valor o mesmo
 				if obj_matriz[i][piece.y] !=null && obj_matriz[i][piece.y].value == value:
-					var temp = obj_matriz[piece.x][piece.y].next_value
+					#var temp = obj_matriz[piece.x][piece.y].next_value
 					remove_and_clear(piece)
 					remove_and_clear(Vector2(i, piece.y))
 					var new_piece = temp.instance()
@@ -106,38 +87,38 @@ func move_piece(piece: Vector2, direction: Vector2):
 					new_piece.position = grid_to_pixel(Vector2(i, piece.y))
 					break
 		Vector2.DOWN:
-			for i in range(next_space.x, -1, -1):
+			for i in range(piece.y -1, -1, -1):
 				# fim da borda e o lado e nulo
 				if i == 0 && obj_matriz[i][piece.y]==null:
-					move_and_set_board_value(piece, Vector2(0, piece.y))
+					move_and_set_board_value(piece, Vector2(piece.x, 0))
 					break
 				# borda eo valor nao o mesmo
 				if obj_matriz[i][piece.y] !=null && obj_matriz[i][piece.y].value != value:
-					move_and_set_board_value(piece, Vector2(i-1, piece.y))
+					move_and_set_board_value(piece, Vector2(piece.x, i+1))
 					break
 				# boarda cheio e valor o mesmo
-				if obj_matriz[i][piece.y] !=null && obj_matriz[i][piece.y].value == value:
-					var temp = obj_matriz[piece.x][piece.y].next_value
+				if obj_matriz[piece.x][i] !=null && obj_matriz[piece.x][i].value == value:
+					#var temp = obj_matriz[piece.x][piece.y].next_value
 					remove_and_clear(piece)
-					remove_and_clear(Vector2(i, piece.y))
+					remove_and_clear(Vector2(piece.x, i))
 					var new_piece = temp.instance()
 					add_child(new_piece)
 					obj_matriz[i][piece.y] = new_piece
-					new_piece.position = grid_to_pixel(Vector2(i, piece.y))
+					new_piece.position = grid_to_pixel(Vector2(piece.x, i))
 					break
 		Vector2.UP:
-			for i in range(next_space.y, height):
+			for i in range(piece.y + 1, height):
 				# fim da borda e o lado e nulo
 				if i == height -1 && obj_matriz[piece.x][i]==null:
 					move_and_set_board_value(piece, Vector2(piece.x, height - 1))
 					break
 				# borda eo valor nao o mesmo
 				if obj_matriz[piece.x][i] !=null && obj_matriz[piece.x][i].value != value:
-					move_and_set_board_value(piece, Vector2(i-1, piece.y))
+					move_and_set_board_value(piece, Vector2(piece.x, i-1))
 					break
 				# boarda cheio e valor o mesmo
 				if obj_matriz[piece.x][i] !=null && obj_matriz[piece.x][i].value == value:
-					var temp = obj_matriz[piece.x][piece.y].next_piece
+					#var temp = obj_matriz[piece.x][piece.y].next_piece
 					remove_and_clear(piece)
 					remove_and_clear(Vector2(piece.x, i))
 					var new_piece = temp.instance()
@@ -148,30 +129,36 @@ func move_piece(piece: Vector2, direction: Vector2):
 
 
 func remove_and_clear(piece: Vector2):
-	obj_matriz[piece.x][piece.y].remove()
-	obj_matriz[piece.x][piece.y] = null
+	#if obj_matriz[piece.x][piece.y] != null:
+		obj_matriz[piece.x][piece.y].remove()
+		obj_matriz[piece.x][piece.y] = null
 
 func _input(event):
-	if Input.is_action_pressed('ui_right'):
+	if Input.is_action_just_pressed('ui_right'):
+		print("press")
 		for j in width:
 			for i in height-1:
 				if obj_matriz[i][j] != null:
 					move_piece(Vector2(i,j), Vector2.RIGHT)
-	if Input.is_action_pressed('ui_left'):
+		generate_piece(0)
+	if Input.is_action_just_pressed('ui_left'):
 		for j in width:
 			for i in range(height -1, -1, -1):
 				if obj_matriz[i][j] != null:
 					move_piece(Vector2(i,j), Vector2.LEFT)
-	if Input.is_action_pressed('ui_down'):
+		generate_piece(0)
+	if Input.is_action_just_pressed('ui_down'):
 		for i in width:
-			for j in height-1:
+			for j in range(0, height, 1):
 				if obj_matriz[i][j] != null:
 					move_piece(Vector2(i,j), Vector2.DOWN)
-	if Input.is_action_pressed('ui_up'):
+		generate_piece(0)
+	if Input.is_action_just_pressed('ui_up'):
 		for i in width:
-			for j in range(height - 1,-1,-1):
+			for j in range(height-2,-1,-1):
 				if obj_matriz[i][j] != null:
 					move_piece(Vector2(i,j), Vector2.UP)
+		generate_piece(0)
 
 
 func one_piece_generate():
@@ -188,10 +175,10 @@ func one_piece_generate():
 		return true
 	return false
 
-func generate_piece():
+func generate_piece(number_of_pieces: int):
 	if space_blank():
 		var generated_piece = 0
-		while generated_piece <= 1:
+		while generated_piece <= number_of_pieces:
 			if one_piece_generate():
 				generated_piece +=1 
 	else:
@@ -208,4 +195,4 @@ func made_bg():
 
 func _ready():
 	made_bg()
-	generate_piece()
+	generate_piece(1)

@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="2048"
-run/main_scene="res://cenas/game.tscn"
+run/main_scene="res://game/2048.tscn"
 config/icon="res://icon.png"
 
 [display]

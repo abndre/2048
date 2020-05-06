@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://game/2048.gd" type="Script" id=1]
+
+[node name="2048" type="Node2D"]
+script = ExtResource( 1 )
