@@ -73,6 +73,10 @@ func merge_piece(piece, i, j):
 	add_child(temp)
 	temp.position = grid_to_pixel(Vector2(i,j))
 
+func move_piece(piece, direction):
+	pass
+
+
 func move_right():
 	var temp_new_position
 	for j in height:
@@ -80,28 +84,7 @@ func move_right():
 			if board[i][j] != null:
 				var piece_value = board[i][j].value
 				# movimentar sem pecas no caminho
-				if i==2 && board[i+1][j]==null:
-					temp_new_position = Vector2(i+1, j)
-					change_piece(temp_new_position, i, j)
-				elif i==2 && board[i+1][j].value==piece_value:
-					temp_new_position = Vector2(i+1, j)
-					change_piece(temp_new_position, i, j)
-					merge_piece(board[i+1][j], i+1, j)
-				elif i==1 && board[i+1][j]==null && board[i+2][j]==null:
-					temp_new_position = Vector2(i+2, j)
-					change_piece(temp_new_position, i, j)
-				elif i==1 && board[i+1][j]==null && board[i+2][j].value != null:
-					temp_new_position = Vector2(i+1, j)
-					change_piece(temp_new_position, i, j)
-				elif i==0 && board[i+1][j]==null && board[i+2][j]==null && board[i+3][j]==null:
-					temp_new_position = Vector2(i+3, j)
-					change_piece(temp_new_position, i, j)
-				elif i==0 && board[i+1][j]==null && board[i+2][j]!=null && board[i+3][j]!=null:
-					temp_new_position = Vector2(i+1, j)
-					change_piece(temp_new_position, i, j)
-				elif i==0 && board[i+1][j]==null && board[i+2][j]==null && board[i+3][j]!=null:
-					temp_new_position = Vector2(i+2, j)
-					change_piece(temp_new_position, i, j)
+
 
 func move_left():
 	var temp_new_position
@@ -177,10 +160,10 @@ func _input(_event):
 func one_piece_generate2():
 	randomize()
 	var pos_x = randi()%3 + 1
-	pos_x=2
+	pos_x=1
 	randomize()
 	var pos_y = randi()%3 + 1
-	pos_y=2
+	pos_y=1
 	if board[pos_x][pos_y]==null:
 		var temp = twopiece.instance()
 		temp.position = grid_to_pixel(Vector2(pos_x, pos_y))
@@ -193,5 +176,5 @@ func one_piece_generate2():
 func _ready():
 	made_bg()
 	one_piece_generate()
-	#one_piece_generate2()
+	one_piece_generate2()
 	#generate_piece()
