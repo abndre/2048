@@ -56,7 +56,7 @@ func is_in_grid(grid_position: Vector2):
 
 func move_and_set_board_value(current:Vector2, new_position:Vector2):
 	var temp = board[current.x][current.y] 
-	temp.move(grid_to_pixel(new_position))
+	temp.move(grid_to_pixel(Vector2(new_position.x, new_position.y)))
 	board[current.x][current.y] = null
 	board[new_position.x][new_position.y]=temp
 
@@ -184,9 +184,11 @@ func move_all_pieces(direction: Vector2):
 					if board[i][j] != null:
 						move_piece(Vector2(i,j), Vector2.UP)
 		Vector2.DOWN:
+			print("down")
 			for i in width:
 				for j in range(0, height, 1):
 					if board[i][j] != null:
+						print("find", i, " ", j)
 						move_piece(Vector2(i,j), Vector2.DOWN)
 		_:
 			continue
@@ -214,14 +216,8 @@ func one_piece_generate():
 		return true
 	return false
 
-func one_piece_generate0():
+func one_piece_generate0(pos_x: int, pos_y:int):
 	var temp
-	#randomize()
-	#var pos_x = randi()%3 + 1
-	#randomize()
-	#var pos_y = randi()%3 + 1
-	var pos_x = 1
-	var pos_y = 1
 	if matrix[pos_x][pos_y]==0:
 		matrix[pos_x][pos_y] = 2
 		randomize()
@@ -265,7 +261,11 @@ func made_2d_array():
 func _ready():
 	#board = made_2d_array()
 	made_bg()
-	generate_piece(0)
+	#generate_piece(0)
+	one_piece_generate0(3,3)
+	one_piece_generate0(2,3)
+	one_piece_generate0(1,3)
+	one_piece_generate0(0,3)
 	#one_piece_generate()
 	#one_piece_generate0()
 
