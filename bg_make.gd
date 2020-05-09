@@ -111,14 +111,15 @@ func move_piece(piece: Vector2, direction: Vector2):
 					new_piece.position = grid_to_pixel(Vector2(i, piece.y))
 					break
 		Vector2.DOWN:
+			
 			for i in range(piece.y -1, -1, -1):
 				# fim da borda e o lado e nulo
-				if i == 0 && board[i][piece.y]==null:
+				if i == 0 && board[i][piece.y] == null:
 					move_and_set_board_value(piece, Vector2(piece.x, 0))
 					break
 				# borda eo valor nao o mesmo
 				if board[i][piece.y] !=null && board[i][piece.y].value != value:
-					move_and_set_board_value(piece, Vector2(piece.x, i+1))
+					move_and_set_board_value(piece, Vector2(piece.x, i + 1))
 					break
 				# boarda cheio e valor o mesmo
 				if board[piece.x][i] !=null && board[piece.x][i].value == value:
@@ -127,7 +128,7 @@ func move_piece(piece: Vector2, direction: Vector2):
 					remove_and_clear(Vector2(piece.x, i))
 					var new_piece = temp.instance()
 					add_child(new_piece)
-					board[piece.x][i] = new_piece
+					board[i][piece.y] = new_piece
 					new_piece.position = grid_to_pixel(Vector2(piece.x, i))
 					break
 		Vector2.UP:
@@ -190,7 +191,7 @@ func move_all_pieces(direction: Vector2):
 						move_piece(Vector2(i,j), Vector2.DOWN)
 		_:
 			continue
-
+	#generate_piece(0)
 
 func one_piece_generate():
 	var temp
@@ -239,7 +240,7 @@ func one_piece_generate0():
 func generate_piece(number_of_pieces: int):
 	if is_space_blank():
 		var generated_piece = 0
-		while generated_piece <= number_of_pieces:
+		while generated_piece < number_of_pieces:
 			if one_piece_generate():
 				generated_piece +=1 
 	else:
@@ -265,9 +266,8 @@ func made_2d_array():
 func _ready():
 	#board = made_2d_array()
 	made_bg()
-	generate_piece(0)
-	#one_piece_generate()
-	#one_piece_generate0()
+	one_piece_generate()
+	one_piece_generate0()
 
 
 func _on_restart_pressed():
