@@ -25,7 +25,8 @@ func remove():
 	size_tween.start()
 	module_tweeb.start()
 
-
+func dead():
+	queue_free()
 
 func _on_ModulateTween_tween_completed(object, key):
 	if scale == Vector2(1.5, 1.5):

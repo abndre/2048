@@ -17,13 +17,7 @@ var pos_matrix =  [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
 func grid_to_pixel(grid: Vector2):
 		return Vector2(x + grid.x*plus, y + grid.y*plus)
 
-func one_piece_generate():
-	randomize()
-	var pos_x = randi()%3 + 1
-	pos_x=2
-	randomize()
-	var pos_y = randi()%3 + 1
-	pos_y=1
+func one_piece_generate(pos_x, pos_y):
 	if board[pos_x][pos_y]==null:
 		var temp = twopiece.instance()
 		temp.position = grid_to_pixel(Vector2(pos_x, pos_y))
@@ -66,25 +60,38 @@ func change_piece(temp_new_position, i,j):
 	add_piece_to_board(temp_new_position, board[i][j])
 	remove_piece_from_board(Vector2(i,j))
 
-func merge_piece(piece, i, j):
-	var temp = piece.next_piece.instance()
-	remove_piece_from_board(Vector2(i,j))
-	board[i][j] = temp
-	add_child(temp)
-	temp.position = grid_to_pixel(Vector2(i,j))
+func move_piece(piece, i,j ,direction):
 
-func move_piece(piece, direction):
-	pass
+	var colum = j
+	match direction:
+		Vector2.RIGHT:
+			for n in range(i, width, 1):
+				print(pos_matrix[i][j])
 
+func update_piece(piece, i, j):
+	var n_piece = piece.next_piece.instance()
+	add_child(n_piece)
+	n_piece.position = grid_to_pixel(Vector2(i,j))
+	board[i][j] = n_piece
 
 func move_right():
 	var temp_new_position
+	var piece = board[0][0]
+	for i in height:
+		for j in width:
+			if board[i][j] != null:
+				move_piece(piece, i,j, Vector2.RIGHT)
+
+
+	
+	"""
 	for j in height:
 		for i in range(width-2,-1,-1):
+			print(i, " ", j)
 			if board[i][j] != null:
 				var piece_value = board[i][j].value
 				# movimentar sem pecas no caminho
-
+	"""
 
 func move_left():
 	var temp_new_position
@@ -147,34 +154,21 @@ func move_down():
 				#temp_new_position = Vector2(i, j+1)
 				change_piece(temp_new_position, i, j)
 
+
 func _input(_event):
 	if Input.is_action_just_pressed('ui_right'):
 		move_right()
 	if Input.is_action_just_pressed('ui_left'):
-		move_left()
+		#move_left()
+		pass
 	if Input.is_action_just_pressed('ui_down'):
-		move_down()
+		#move_down()
+		pass
 	if Input.is_action_just_pressed('ui_up'):
-		move_up()
-
-func one_piece_generate2():
-	randomize()
-	var pos_x = randi()%3 + 1
-	pos_x=1
-	randomize()
-	var pos_y = randi()%3 + 1
-	pos_y=1
-	if board[pos_x][pos_y]==null:
-		var temp = twopiece.instance()
-		temp.position = grid_to_pixel(Vector2(pos_x, pos_y))
-		add_child(temp)
-		board[pos_x][pos_y] = temp
-		return true
-	return false
-
+		#move_up()
+		pass
 
 func _ready():
 	made_bg()
-	one_piece_generate()
-	one_piece_generate2()
-	#generate_piece()
+	one_piece_generate(0,0)
+

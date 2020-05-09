@@ -5,7 +5,7 @@
 [ext_resource path="res://assets/img/tile002.png" type="Texture" id=3]
 
 [node name="piece" instance=ExtResource( 1 )]
-value = 5
+value = 8
 next_piece = ExtResource( 2 )
 
 [node name="piece" parent="." index="0"]
