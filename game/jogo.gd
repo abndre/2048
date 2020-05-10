@@ -1,10 +1,12 @@
 extends Node2D
 
+var score = 0
+var high_socre= 0
 
 var width := 4
 var height :=4
 
-var x := 160
+var x := 180
 var y := 400
 var plus := 82
 
@@ -14,6 +16,13 @@ onready var fourpiece = preload("res://pieces/4piece.tscn")
 
 var board = [[null,null,null,null],[null,null,null,null],[null,null,null,null],[null,null,null,null]]	
 var pos_matrix =  [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+
+func update_score(piece):
+	score += int(piece.value *2)
+	$placar/score.text = str(score)
+	if high_socre < score:
+		high_socre = score
+	$placar/high_score.text = str(high_socre)
 
 func grid_to_pixel(grid: Vector2):
 		return Vector2(x + grid.x*plus, y + grid.y*plus)
@@ -28,6 +37,8 @@ func update_one_piece(piece, i, j, plus_x, plus_y=0):
 	piece.move(grid_to_pixel(Vector2(i+plus_x, j+plus_y)))
 	board[i][j] =null
 	board[i+plus_x][j+plus_y] =piece
+
+
 
 func update_two_pieces(piece_one, piece_two, i, j , plus_x, plus_y=0):
 	# move a peca
@@ -45,6 +56,8 @@ func update_two_pieces(piece_one, piece_two, i, j , plus_x, plus_y=0):
 	board[i+plus_x][j+plus_y] = null
 	board[i][j] = null
 	board[i+plus_x][j+plus_y] = new_piece
+	
+	update_score(piece_one)
 
 func thirth_piece(temp, i,j, left=1):
 	var value = temp.value
@@ -121,7 +134,24 @@ func move_piece(piece, i,j ,direction):
 				if first_piece(temp, i, j):
 					return
 		Vector2.LEFT:
-			pass
+			var left = -1
+			if i ==3:
+				if thirth_piece(temp, i, j, left): 
+					return
+
+				if second_piece(temp, i, j, left):
+					return
+				if first_piece(temp, i, j, left):
+					return
+
+			if i ==2:
+				if second_piece(temp, i, j, left):
+					return
+				if first_piece(temp, i, j, left):
+					return
+			if i ==1:
+				if first_piece(temp, i, j, left):
+					return
 
 func move_right():
 	var temp_new_position
@@ -130,16 +160,16 @@ func move_right():
 		for i in [2,1,0]:
 			if board[i][j] != null:
 				move_piece(piece, i,j, Vector2.RIGHT)
-				#printar()
+				printar()
 
 func move_left():
 	var temp_new_position
 	var piece = board[0][0]
 	for j in height:
-		for i in [0,1,2]:
+		for i in [1,2,3]:
 			if board[i][j] != null:
 				move_piece(piece, i,j, Vector2.LEFT)
-				#printar()
+				printar()
 
 func move_up():
 	pass
@@ -211,6 +241,8 @@ func _ready():
 	one_piece_generate_2(2,0)
 	one_piece_generate_2(3,0)
 	#printar()
+	$placar/score.text = str(score)
+	$placar/high_score.text = str(high_socre)
 	pass # Replace with function body.
 
 func _on_reload_pressed():

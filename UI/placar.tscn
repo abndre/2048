@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://UI/new_dynamicfont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://UI/new_dynamicfont_2.tres" type="DynamicFont" id=2]
+
+[node name="placar" type="Node2D"]
+
+[node name="score" type="Label" parent="."]
+margin_left = 21.6696
+margin_top = 41.1292
+margin_right = 171.67
+margin_bottom = 88.1292
+custom_fonts/font = ExtResource( 1 )
+text = "000000"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="high_score" type="Label" parent="."]
+margin_left = 443.336
+margin_top = 42.5411
+margin_right = 593.336
+margin_bottom = 89.5411
+custom_fonts/font = ExtResource( 1 )
+text = "000000"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lbl_high_score" type="Label" parent="."]
+margin_left = 415.221
+margin_top = 16.3289
+margin_right = 572.221
+margin_bottom = 46.3289
+custom_fonts/font = ExtResource( 2 )
+text = "high score:"
+
+[node name="lbl_score" type="Label" parent="."]
+margin_left = 6.99811
+margin_top = 15.1626
+margin_right = 93.9981
+margin_bottom = 45.1626
+custom_fonts/font = ExtResource( 2 )
+text = "score:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
