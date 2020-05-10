@@ -46,47 +46,54 @@ func update_two_pieces(piece_one, piece_two, i, j , plus_x, plus_y=0):
 	board[i][j] = null
 	board[i+plus_x][j+plus_y] = new_piece
 
-
-func thirth_piece(temp, i,j):
+func thirth_piece(temp, i,j, left=1):
 	var value = temp.value
-	if board[i+1][j]==null && board[i+2][j]==null && board[i+3][j]==null:
-		var plus = 3
+	var board_1 = board[i+1*left][j]
+	var board_2 = board[i+2*left][j]
+	var board_3 = board[i+3*left][j]
+
+	if board_1==null && board_2==null && board_3==null:
+		var plus = 3*left
 		update_one_piece(temp, i, j, plus)
 		return true
-	if board[i+1][j]==null && board[i+2][j]==null && board[i+3][j].value==value:
-		var plus = 3
+	if board_1==null && board_2==null && board_3.value==value:
+		var plus = 3*left
 		update_two_pieces(temp, board[i+plus][j],i,j,plus)
 		return true
-	if board[i+1][j]==null && board[i+2][j]==null && board[i+3][j].value!=value:
-		var plus = 2
+	if board_1==null && board_2==null && board_3.value!=value:
+		var plus = 2*left
 		update_one_piece(temp, i, j, plus)
 		return true
 	return false
 
-func second_piece(temp, i, j):
+func second_piece(temp, i, j, left = 1):
 	var value = temp.value
-	if board[i+1][j]==null && board[i+2][j]==null:
-		var plus = 2
+	var board_1 = board[i+1*left][j]
+	var board_2 = board[i+2*left][j]
+
+	if board_1==null && board_2==null:
+		var plus = 2*left
 		update_one_piece(temp, i, j, plus)
 		return true
-	if board[i+1][j]==null && board[i+2][j].value==value:
-		var plus = 2
+	if board_1==null && board_2.value==value:
+		var plus = 2*left
 		update_two_pieces(temp, board[i+plus][j],i,j,plus)
 		return true
-	if board[i+1][j]==null && board[i+2][j].value!=value:
-		var plus = 1
+	if board_1==null && board_2.value!=value:
+		var plus = 1*left
 		update_one_piece(temp, i, j, plus)
 		return true
 	return false
 
-func first_piece(temp, i,j):
+func first_piece(temp, i,j, left=1):
 	var value = temp.value
-	if board[i+1][j]==null :
-		var plus = 1
+	var board_1 = board[i+1*left][j]
+	if board_1==null :
+		var plus = 1*left
 		update_one_piece(temp, i, j ,plus)
 		return true
-	if board[i+1][j].value==value :
-		var plus = 1
+	if board_1.value==value :
+		var plus = 1*left
 		update_two_pieces(temp, board[i+plus][j], i, j ,plus)
 		return true
 	return false
@@ -200,11 +207,14 @@ func _ready():
 	made_bg()
 	#generate_piece()
 	one_piece_generate_2(0,0)
-	#one_piece_generate_2(1,0)
-	#one_piece_generate_2(2,0)
-	#one_piece_generate_2(3,0)
+	one_piece_generate_2(1,0)
+	one_piece_generate_2(2,0)
+	one_piece_generate_2(3,0)
 	#printar()
 	pass # Replace with function body.
+
+func _on_reload_pressed():
+	get_tree().reload_current_scene()
 
 
 
