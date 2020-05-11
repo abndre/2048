@@ -33,7 +33,7 @@ func grid_to_pixel(grid: Vector2):
 
 func update_piece(piece, i, j):
 	var n_piece = piece.next_piece.instance()
-	add_child(n_piece)
+	$pieces.add_child(n_piece)
 	n_piece.position = grid_to_pixel(Vector2(i,j))
 	board[i][j] = n_piece
 
@@ -51,7 +51,7 @@ func update_two_pieces(piece_one, piece_two, i, j , plus_x, plus_y=0):
 
 	# cria peca de soma
 	var new_piece = piece_one.next_piece.instance()
-	add_child(new_piece)
+	$pieces.add_child(new_piece)
 	new_piece.position = grid_to_pixel(vector)
 
 	piece_one.remove()
@@ -310,7 +310,7 @@ func made_bg():
 		for i in width:
 			var p = default.instance()
 			p.position = grid_to_pixel(Vector2(i,j))
-			add_child(p)
+			$pieces.add_child(p)
 			pos_matrix[i][j] = grid_to_pixel(Vector2(i,j)) 
 
 func generate_piece():
@@ -329,7 +329,7 @@ func generate_piece():
 		else:
 			temp = twopiece.instance()
 		temp.position = grid_to_pixel(Vector2(pos_x, pos_y))
-		add_child(temp)
+		$pieces.add_child(temp)
 		board[pos_x][pos_y] = temp
 		return true
 	return false
@@ -342,7 +342,7 @@ func one_piece_generate(pos_x, pos_y):
 	else:
 		temp = twopiece.instance()
 	temp.position = grid_to_pixel(Vector2(pos_x, pos_y))
-	add_child(temp)
+	$pieces.add_child(temp)
 	board[pos_x][pos_y] = temp
 
 
@@ -350,7 +350,7 @@ func one_piece_generate_2(pos_x, pos_y):
 	if board[pos_x][pos_y]==null:
 		var temp = twopiece.instance()
 		temp.position = grid_to_pixel(Vector2(pos_x, pos_y))
-		add_child(temp)
+		$pieces.add_child(temp)
 		board[pos_x][pos_y] = temp
 		return true
 	return false
@@ -359,7 +359,7 @@ func one_piece_generate_4(pos_x, pos_y):
 	if board[pos_x][pos_y]==null:
 		var temp = fourpiece.instance()
 		temp.position = grid_to_pixel(Vector2(pos_x, pos_y))
-		add_child(temp)
+		$pieces.add_child(temp)
 		board[pos_x][pos_y] = temp
 		return true
 	return false
@@ -368,7 +368,7 @@ func one_piece_generate_8(pos_x, pos_y):
 	if board[pos_x][pos_y]==null:
 		var temp = oitopiece.instance()
 		temp.position = grid_to_pixel(Vector2(pos_x, pos_y))
-		add_child(temp)
+		$pieces.add_child(temp)
 		board[pos_x][pos_y] = temp
 		return true
 	return false
@@ -377,7 +377,7 @@ func one_piece_generate_16(pos_x, pos_y):
 	if board[pos_x][pos_y]==null:
 		var temp = dezesseispiece.instance()
 		temp.position = grid_to_pixel(Vector2(pos_x, pos_y))
-		add_child(temp)
+		$pieces.add_child(temp)
 		board[pos_x][pos_y] = temp
 		return true
 	return false
@@ -438,7 +438,7 @@ func generate_piece_game():
 		one_piece_generate(pieces[rand][0], pieces[rand][1])
 
 func _ready():
-	#$endgame.visible = false
+	$endgame.visible = false
 	made_bg()
 	generate_piece_game()
 	generate_piece_game()

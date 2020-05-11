@@ -23,6 +23,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="pieces" type="Node2D" parent="."]
+
 [node name="endgame" type="Panel" parent="."]
 pause_mode = 2
 margin_left = 171.979
