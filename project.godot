@@ -19,6 +19,10 @@ config/name="2048"
 run/main_scene="res://game/jogo.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+data="*res://save/datat.gd"
+
 [display]
 
 window/size/width=600

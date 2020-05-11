@@ -1,7 +1,7 @@
 extends Node2D
 
 var score = 0
-var high_socre= 0
+var high_socre = data.get_high_score()
 
 var width := 4
 var height :=4
@@ -9,8 +9,10 @@ var height :=4
 var x := 180.0
 var y := 400.0
 var plus := 82.0
-
+var can_move = true
 var dead = 0
+
+var back_board = [null,null,null,null, null]
 
 onready var default = preload("res://cenas/default.tscn")
 onready var twopiece = preload("res://pieces/2piece.tscn")
@@ -26,6 +28,8 @@ func update_score(piece):
 	$placar/score.text = str(score)
 	if high_socre < score:
 		high_socre = score
+		data.high_score = high_socre
+		data.save_hich_core()
 	$placar/high_score.text = str(high_socre)
 
 func grid_to_pixel(grid: Vector2):
@@ -249,61 +253,79 @@ func move_piece(_piece, i,j ,direction):
 		_:
 			continue
 
+func voltar():
+	back_board.pop_front()
+	back_board.append(board)
+
+
 func move_right():
+	voltar()
 	var piece = board[0][0]
 	for j in height:
 		for i in [2,1,0]:
 			if board[i][j] != null:
 				move_piece(piece, i,j, Vector2.RIGHT)
-				#printar()
+
 
 func move_left():
-
+	voltar()
 	var piece = board[0][0]
 	for j in height:
 		for i in [1,2,3]:
 			if board[i][j] != null:
 				move_piece(piece, i,j, Vector2.LEFT)
-				#printar()
+
 
 func move_up():
+	voltar()
 	var piece = board[0][0]
 	for i in width:
 		for j in [1,2,3]:
 			if board[i][j] != null:
 				move_piece(piece, i,j, Vector2.UP)
-				#printar()
+
 
 func move_down():
-
+	voltar()
 	var piece = board[0][0]
 	for i in width:
 		for j in [2,1,0]:
 			if board[i][j] != null:
 				move_piece(piece, i,j, Vector2.DOWN)
-				#printar()
+
 
 func _input(_event):
+	
+	if $play.visible ==true:
+		return
+	
+	#if $next_move.get_time_left() < 0:
+	#	return
+	
+	if can_move == false:
+		return
+	
 	if Input.is_action_just_pressed('ui_right'):
 		move_right()
 		generate_piece_game()
-		#print("right")
-		#printar()
+		$next_move.start()
+		can_move = false
+
 	if Input.is_action_just_pressed('ui_left'):
 		move_left()
 		generate_piece_game()
-		#print("left")
-		#printar()
+		$next_move.start()
+		can_move = false
 	if Input.is_action_just_pressed('ui_down'):
 		move_down()
 		generate_piece_game()
-		#print("down")
-		#printar()
+		$next_move.start()
+		can_move = false
 	if Input.is_action_just_pressed('ui_up'):
 		move_up()
 		generate_piece_game()
-		#print("up")
-		#printar()
+		$next_move.start()
+		can_move = false
 
 func made_bg():
 	for j in height:
@@ -344,7 +366,6 @@ func one_piece_generate(pos_x, pos_y):
 	temp.position = grid_to_pixel(Vector2(pos_x, pos_y))
 	$pieces.add_child(temp)
 	board[pos_x][pos_y] = temp
-
 
 func one_piece_generate_2(pos_x, pos_y):
 	if board[pos_x][pos_y]==null:
@@ -440,8 +461,8 @@ func generate_piece_game():
 func _ready():
 	$endgame.visible = false
 	made_bg()
-	generate_piece_game()
-	generate_piece_game()
+	#generate_piece_game()
+	#generate_piece_game()
 	#generate_piece()
 	#generate_piece()
 	#var col
@@ -487,8 +508,26 @@ func _on_restart_end_game_pressed():
 	$endgame.visible = false
 	return get_tree().reload_current_scene()
 
-
-
 func _on_close_pressed():
 	get_tree().paused = false
 	$endgame.visible = false
+
+
+func _on_voltar_pressed():
+	#printar()
+	print(back_board[-1])
+	board = back_board[-1]
+	back_board.pop_back()
+	#printar()
+	pass # Replace with function body.
+
+
+func _on_play_pressed():
+	generate_piece_game()
+	generate_piece_game()
+	$play.visible = false
+	pass # Replace with function body.
+
+
+func _on_next_move_timeout():
+	can_move = true

@@ -6,9 +6,12 @@ var swipe_start_position: = Vector2()
 
 export(float, 1.0, 1.5) var max_diagonal_slope: = 1.3
 
+var lista =[1,2,3,4,5]
 
 func _ready():
-	pass
+	lista.pop_front()
+	lista.append(7)
+	print(lista)
 
 func _start_detection(position: Vector2) -> void:
 	swipe_start_position = position
