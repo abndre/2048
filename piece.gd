@@ -20,6 +20,7 @@ func move(new_position: Vector2):
 	move_tween.start()
 
 func remove():
+	#queue_free()
 	size_tween.interpolate_property(self, "scale", Vector2(1.5, 1.5), 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
 	module_tweeb.interpolate_property(self, "modulate", modulate, Color(0,0,0,0), 0.2,Tween.TRANS_SINE, Tween.EASE_OUT)
 	size_tween.start()
@@ -28,7 +29,12 @@ func remove():
 func dead():
 	queue_free()
 
-func _on_ModulateTween_tween_completed(object, key):
-	if scale == Vector2(1.5, 1.5):
-		queue_free()
+func _on_ModulateTween_tween_completed(_object, _key):
+	queue_free()
+	pass
 
+
+
+func _on_SizeTween_tween_completed(_object, _key):
+	#queue_free()
+	pass # Replace with function body.

@@ -193,7 +193,7 @@ func move_all_pieces(direction: Vector2):
 						move_piece(Vector2(i,j), Vector2.DOWN)
 		_:
 			continue
-	#generate_piece(0)
+
 
 func one_piece_generate():
 	var temp
