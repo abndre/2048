@@ -1,13 +1,34 @@
 extends Node2D
 
-#var matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]]
 
-var matrix =[[1,2],[0,0],[3,3]]
+onready var timer: Timer = $SwipeTimeout
+var swipe_start_position: = Vector2()
+
+export(float, 1.0, 1.5) var max_diagonal_slope: = 1.3
+
 
 func _ready():
-	#print(len(matrix))
-	randomize()
-	var rand = randi()%len(matrix)
-	print(rand)
-	print(matrix[rand])
-	# randi()%3 + 1
+	pass
+
+func _start_detection(position: Vector2) -> void:
+	swipe_start_position = position
+	timer.start()
+
+func _end_detection(position: Vector2) -> void:
+	timer.stop()
+	var direction: Vector2 = (position - swipe_start_position).normalized()
+	print(" ")
+	print(direction)
+
+func _input(event):
+	if event is InputEventScreenTouch:
+		#print(event.position)
+		if event.pressed:
+			_start_detection(event.position)
+		elif not timer.is_stopped():
+			_end_detection(event.position)
+
+
+
+func _on_SwipeTimeout_timeout():
+	pass # Replace with function body.
