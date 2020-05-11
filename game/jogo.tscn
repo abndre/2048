@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://game/jogo.gd" type="Script" id=1]
 [ext_resource path="res://assets/btn/88.png" type="Texture" id=2]
 [ext_resource path="res://UI/placar.tscn" type="PackedScene" id=3]
+[ext_resource path="res://UI/new_dynamicfont.tres" type="DynamicFont" id=4]
+[ext_resource path="res://assets/btn/106.png" type="Texture" id=5]
 
 [node name="jogo" type="Node2D"]
 script = ExtResource( 1 )
@@ -20,4 +22,42 @@ expand_icon = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="endgame" type="Panel" parent="."]
+pause_mode = 2
+margin_left = 171.979
+margin_top = 394.053
+margin_right = 461.979
+margin_bottom = 672.053
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="message" type="Label" parent="endgame"]
+margin_left = 103.551
+margin_top = 60.1266
+margin_right = 182.551
+margin_bottom = 107.127
+custom_fonts/font = ExtResource( 4 )
+text = "Fim"
+
+[node name="restart_end_game" type="Button" parent="endgame"]
+margin_left = 33.8734
+margin_top = 136.723
+margin_right = 120.873
+margin_bottom = 224.723
+icon = ExtResource( 2 )
+flat = true
+expand_icon = true
+
+[node name="close" type="Button" parent="endgame"]
+margin_left = 158.667
+margin_top = 128.604
+margin_right = 255.667
+margin_bottom = 237.604
+icon = ExtResource( 5 )
+flat = true
+expand_icon = true
 [connection signal="pressed" from="reload" to="." method="_on_reload_pressed"]
+[connection signal="pressed" from="endgame/restart_end_game" to="." method="_on_restart_end_game_pressed"]
+[connection signal="pressed" from="endgame/close" to="." method="_on_close_pressed"]

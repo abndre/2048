@@ -10,6 +10,8 @@ var x := 180.0
 var y := 400.0
 var plus := 82.0
 
+var dead = 0
+
 onready var default = preload("res://cenas/default.tscn")
 onready var twopiece = preload("res://pieces/2piece.tscn")
 onready var fourpiece = preload("res://pieces/4piece.tscn")
@@ -426,11 +428,17 @@ func generate_piece_game():
 	var pieces = get_null_pieces()
 	if len(pieces) == 0:
 		print("No more Room!!!")
+		dead +=1
+		if dead >=4:
+			print("end game")
+			get_tree().paused = true
+			$endgame.visible = true
 	else:
 		var rand = randi()%len(pieces)
 		one_piece_generate(pieces[rand][0], pieces[rand][1])
 
 func _ready():
+	#$endgame.visible = false
 	made_bg()
 	generate_piece_game()
 	generate_piece_game()
@@ -474,5 +482,13 @@ func _ready():
 func _on_reload_pressed():
 	return get_tree().reload_current_scene()
 
+func _on_restart_end_game_pressed():
+	get_tree().paused = false
+	$endgame.visible = false
+	return get_tree().reload_current_scene()
 
 
+
+func _on_close_pressed():
+	get_tree().paused = false
+	$endgame.visible = false
