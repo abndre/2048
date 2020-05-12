@@ -17,7 +17,7 @@ _global_script_class_icons={
 
 config/name="2048"
 run/main_scene="res://game/jogo.tscn"
-config/icon="res://icon.png"
+config/icon="res://gnome-2048-icon.png"
 
 [autoload]
 
@@ -31,7 +31,7 @@ window/size/test_width=300
 window/size/test_height=512
 window/handheld/orientation="portrait"
 window/stretch/mode="2d"
-window/stretch/aspect="keep"
+window/stretch/aspect="expand"
 
 [input_devices]
 

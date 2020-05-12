@@ -14,6 +14,8 @@ var dead = 0
 
 var back_board = [null,null,null,null, null]
 
+var swipe_start_position: = Vector2()
+
 onready var default = preload("res://cenas/default.tscn")
 onready var twopiece = preload("res://pieces/2piece.tscn")
 onready var fourpiece = preload("res://pieces/4piece.tscn")
@@ -293,8 +295,12 @@ func move_down():
 			if board[i][j] != null:
 				move_piece(piece, i,j, Vector2.DOWN)
 
+func pieces_game():
+		generate_piece_game()
+		$next_move.start()
+		can_move = false
 
-func _input(_event):
+func _input(event):
 	
 	if $play.visible ==true:
 		return
@@ -307,25 +313,58 @@ func _input(_event):
 	
 	if Input.is_action_just_pressed('ui_right'):
 		move_right()
-		generate_piece_game()
-		$next_move.start()
-		can_move = false
+		pieces_game()
 
 	if Input.is_action_just_pressed('ui_left'):
 		move_left()
-		generate_piece_game()
-		$next_move.start()
-		can_move = false
+		pieces_game()
 	if Input.is_action_just_pressed('ui_down'):
 		move_down()
-		generate_piece_game()
-		$next_move.start()
-		can_move = false
+		pieces_game()
 	if Input.is_action_just_pressed('ui_up'):
 		move_up()
-		generate_piece_game()
-		$next_move.start()
-		can_move = false
+		pieces_game()
+
+	if event is InputEventScreenTouch:
+		if (event.position.y > 230):
+			if (event.pressed==true): # pressed
+	
+				swipe_start_position = event.position
+			elif (event.pressed==false): #release
+				var direction = event.position - swipe_start_position
+				#var direct = direction.normalized()
+				var angle = rad2deg(direction.angle())
+				print(angle) 
+				if angle > 160.0 && angle < 180:
+					#print("left 1")
+					move_left()
+					pieces_game()
+					return
+				elif angle < -160.0 && angle > -180:
+					#print("left 2")
+					move_left()
+					pieces_game()
+					return
+				elif angle > 0 && angle <30:
+					#print("right 1")
+					move_right()
+					pieces_game()
+					return
+				elif angle < -1 && angle > -30:
+					#print("right 2")
+					move_right()
+					pieces_game()
+					return
+				elif angle < 120 && angle > 50:
+					#print("down")
+					move_down()
+					pieces_game()
+					return
+				elif angle > -120 && angle < -50:
+					#print("up")
+					move_up()
+					pieces_game()
+					return
 
 func made_bg():
 	for j in height:
