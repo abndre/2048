@@ -12,9 +12,13 @@ var plus := 120.0
 var can_move = true
 var dead = 0
 
+var timer_touch :=0.0
+
 var back_board = [null,null,null,null, null]
 
 var swipe_start_position: = Vector2()
+
+var new_piece =false
 
 onready var default = preload("res://cenas/default.tscn")
 onready var twopiece = preload("res://pieces/2piece.tscn")
@@ -49,6 +53,7 @@ func update_one_piece(piece, i, j, plus_x, plus_y=0):
 	board[i+plus_x][j+plus_y] =piece
 	#board[i][j].dead()
 	board[i][j] =null
+	new_piece =true
 
 func update_two_pieces(piece_one, piece_two, i, j , plus_x, plus_y=0):
 	# move a peca
@@ -69,6 +74,7 @@ func update_two_pieces(piece_one, piece_two, i, j , plus_x, plus_y=0):
 	board[i+plus_x][j+plus_y] = new_piece
 	
 	update_score(piece_one)
+	new_piece =true
 
 func thirth_piece_y(temp, i,j, left=1):
 	var value = temp.value
@@ -268,7 +274,6 @@ func voltar():
 		temp.append(t2)
 	back_board.append(temp)
 
-
 func move_right():
 	voltar()
 	var piece = board[0][0]
@@ -277,6 +282,9 @@ func move_right():
 			if board[i][j] != null:
 				move_piece(piece, i,j, Vector2.RIGHT)
 
+	if new_piece ==true:
+		new_piece = false
+		pieces_game()
 
 func move_left():
 	voltar()
@@ -285,7 +293,9 @@ func move_left():
 		for i in [1,2,3]:
 			if board[i][j] != null:
 				move_piece(piece, i,j, Vector2.LEFT)
-
+	if new_piece ==true:
+		new_piece = false
+		pieces_game()
 
 func move_up():
 	voltar()
@@ -294,7 +304,9 @@ func move_up():
 		for j in [1,2,3]:
 			if board[i][j] != null:
 				move_piece(piece, i,j, Vector2.UP)
-
+	if new_piece ==true:
+		new_piece = false
+		pieces_game()
 
 func move_down():
 	voltar()
@@ -303,6 +315,9 @@ func move_down():
 		for j in [2,1,0]:
 			if board[i][j] != null:
 				move_piece(piece, i,j, Vector2.DOWN)
+	if new_piece ==true:
+		new_piece = false
+		pieces_game()
 
 func pieces_game():
 		generate_piece_game()
@@ -322,24 +337,26 @@ func _input(event):
 	
 	if Input.is_action_just_pressed('ui_right'):
 		move_right()
-		pieces_game()
+		#pieces_game()
 
 	if Input.is_action_just_pressed('ui_left'):
 		move_left()
-		pieces_game()
+		#pieces_game()
 	if Input.is_action_just_pressed('ui_down'):
 		move_down()
-		pieces_game()
+		#pieces_game()
 	if Input.is_action_just_pressed('ui_up'):
 		move_up()
-		pieces_game()
+		#pieces_game()
 
 	if event is InputEventScreenTouch:
 		if (event.position.y > 230):
 			if (event.pressed==true): # pressed
-	
+				$touch.start()
 				swipe_start_position = event.position
 			elif (event.pressed==false): #release
+				if $touch.is_stopped():
+					return
 				var direction = event.position - swipe_start_position
 				#var direct = direction.normalized()
 				var angle = rad2deg(direction.angle())
@@ -347,32 +364,32 @@ func _input(event):
 				if angle > 160.0 && angle < 180:
 					#print("left 1")
 					move_left()
-					pieces_game()
+					#pieces_game()
 					return
 				elif angle < -160.0 && angle > -180:
 					#print("left 2")
 					move_left()
-					pieces_game()
+					#pieces_game()
 					return
 				elif angle > 0 && angle <30:
 					#print("right 1")
 					move_right()
-					pieces_game()
+					#pieces_game()
 					return
 				elif angle < -1 && angle > -30:
 					#print("right 2")
 					move_right()
-					pieces_game()
+					#pieces_game()
 					return
 				elif angle < 120 && angle > 50:
 					#print("down")
 					move_down()
-					pieces_game()
+					#pieces_game()
 					return
 				elif angle > -120 && angle < -50:
 					#print("up")
 					move_up()
-					pieces_game()
+					#pieces_game()
 					return
 
 func made_bg():
@@ -535,7 +552,6 @@ func _on_voltar_pressed():
 			if temp != null:
 				temp.dead()
 				board[i][j] = null
-
 
 
 func _on_play_pressed():
