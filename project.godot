@@ -17,6 +17,8 @@ _global_script_class_icons={
 
 config/name="2048"
 run/main_scene="res://game/jogo.tscn"
+boot_splash/fullsize=false
+boot_splash/use_filter=false
 config/icon="res://gnome-2048-icon.png"
 
 [autoload]
@@ -39,4 +41,5 @@ pointing/emulate_touch_from_mouse=true
 
 [rendering]
 
+environment/default_clear_color=Color( 0.470588, 0.458824, 0.415686, 1 )
 environment/default_environment="res://default_env.tres"

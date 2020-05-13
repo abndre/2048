@@ -6,9 +6,9 @@ var high_socre = data.get_high_score()
 var width := 4
 var height :=4
 
-var x := 180.0
+var x := 120.0
 var y := 400.0
-var plus := 82.0
+var plus := 120.0
 var can_move = true
 var dead = 0
 
@@ -257,7 +257,16 @@ func move_piece(_piece, i,j ,direction):
 
 func voltar():
 	back_board.pop_front()
-	back_board.append(board)
+	var temp :=[]
+	for j in height:
+		var t2 =[]
+		for i in width:
+			if board[i][j] !=null:
+				t2.append(board[i][j].value)
+			else:
+				t2.append(0)
+		temp.append(t2)
+	back_board.append(temp)
 
 
 func move_right():
@@ -334,7 +343,7 @@ func _input(event):
 				var direction = event.position - swipe_start_position
 				#var direct = direction.normalized()
 				var angle = rad2deg(direction.angle())
-				print(angle) 
+				#print(angle) 
 				if angle > 160.0 && angle < 180:
 					#print("left 1")
 					move_left()
@@ -500,47 +509,13 @@ func generate_piece_game():
 func _ready():
 	$endgame.visible = false
 	made_bg()
-	#generate_piece_game()
-	#generate_piece_game()
-	#generate_piece()
-	#generate_piece()
-	#var col
-	
-	#col =0
-	#one_piece_generate_2(0,col)
-	#one_piece_generate_2(1,col)
-	#one_piece_generate_2(2,col)
-	#one_piece_generate_2(2,0)
-	#one_piece_generate_2(3,0)
-
-
-	#col = 1
-	#one_piece_generate_4(0,col)
-	#one_piece_generate_4(1,col)
-	#one_piece_generate_4(2,col)
-	#col = 2
-	#one_piece_generate_8(0,col)
-	#one_piece_generate_8(1,col)
-	#one_piece_generate_8(2,col)
-	#one_piece_generate_2(1,col)
-	#one_piece_generate_2(2,col)
-	#one_piece_generate_2(3,col)
-	
-	#col = 3
-	#one_piece_generate_16(0,col)
-	#one_piece_generate_16(1,col)
-	#one_piece_generate_16(2,col)
-	#one_piece_generate_2(1,col)
-	#one_piece_generate_2(2,col)
-	#one_piece_generate_2(3,col)
-
-	#printar()
 	$placar/score.text = str(score)
 	$placar/high_score.text = str(high_socre)
-	pass # Replace with function body.
+
 
 func _on_reload_pressed():
-	return get_tree().reload_current_scene()
+	get_tree().reload_current_scene()
+
 
 func _on_restart_end_game_pressed():
 	get_tree().paused = false
@@ -553,20 +528,43 @@ func _on_close_pressed():
 
 
 func _on_voltar_pressed():
-	#printar()
-	print(back_board[-1])
-	board = back_board[-1]
-	back_board.pop_back()
-	#printar()
-	pass # Replace with function body.
+	print("rodada")
+	for j in height:
+		for i in width:
+			var temp = board[i][j]
+			if temp != null:
+				temp.dead()
+				board[i][j] = null
+
 
 
 func _on_play_pressed():
 	generate_piece_game()
 	generate_piece_game()
 	$play.visible = false
+	$pieces.visible = true
 	pass # Replace with function body.
 
 
 func _on_next_move_timeout():
 	can_move = true
+
+func printar_bg_2(bor):
+	
+	var lin = [0,1,2,3]
+	var p
+	var s
+	var t
+	var q
+	for i in [0,1,2,3]:
+		p = bor[lin[0]][i]
+		s = bor[lin[1]][i]
+		t = bor[lin[2]][i]
+		q = bor[lin[3]][i]
+		print(p, " ", s, " ", t, " ", q)
+	print(" ")
+
+func printar_bg(bor):
+	for i in bor:
+		print(i)
+	print(" ")
